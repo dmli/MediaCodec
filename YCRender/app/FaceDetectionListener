@@ -1,0 +1,20 @@
+YCPointTestView mkPointView;
+mRealCamera.getCamera().setFaceDetectionListener(new Camera.FaceDetectionListener() {
+                @Override
+                public void onFaceDetection(Camera.Face[] faces, Camera camera) {
+                    if (faces != null && faces.length > 0) {
+                        Log.e("faceDetect", "识别 数据序号 " + index + "  time = " + (System.currentTimeMillis() - time2));
+                        Rect r = faces[0].rect;
+                        //尺寸90度,这里宽高取反
+                        float sw = mTextureViewSceneHandle.getTextureViewHeight();
+                        float sh = mTextureViewSceneHandle.getTextureViewWidth();
+                        int left = (int) ((1000 - r.bottom) * (sh * 1.0f / 2000f));
+                        int top = (int) ((1000 - r.right) * (sw * 1.0f / 2000f));
+                        int faceW = (int) (r.width() * (sw / 2000f));
+                        int faceH = (int) (r.height() * (sh / 2000f));
+                        faceRect.set(left, top, left + faceW, top + faceH);
+                        mkPointView.setRect(faceRect);
+                    }
+                }
+            });
+            mRealCamera.getCamera().startFaceDetection();
